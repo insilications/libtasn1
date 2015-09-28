@@ -4,7 +4,7 @@
 #
 Name     : libtasn1
 Version  : 4.7
-Release  : 12
+Release  : 13
 URL      : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.7.tar.gz
 Source0  : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.7.tar.gz
 Summary  : Library for ASN.1 and DER manipulation
