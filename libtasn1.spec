@@ -4,7 +4,7 @@
 #
 Name     : libtasn1
 Version  : 4.9
-Release  : 17
+Release  : 18
 URL      : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.9.tar.gz
 Source0  : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.9.tar.gz
 Summary  : Library for ASN.1 and DER manipulation
@@ -15,6 +15,11 @@ Requires: libtasn1-lib
 Requires: libtasn1-doc
 BuildRequires : bison
 BuildRequires : docbook-xml
+BuildRequires : gcc-dev32
+BuildRequires : gcc-libgcc32
+BuildRequires : gcc-libstdc++32
+BuildRequires : glibc-dev32
+BuildRequires : glibc-libc32
 BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : libxslt-bin
@@ -44,6 +49,17 @@ Provides: libtasn1-devel
 dev components for the libtasn1 package.
 
 
+%package dev32
+Summary: dev32 components for the libtasn1 package.
+Group: Default
+Requires: libtasn1-lib32
+Requires: libtasn1-bin
+Requires: libtasn1-dev
+
+%description dev32
+dev32 components for the libtasn1 package.
+
+
 %package doc
 Summary: doc components for the libtasn1 package.
 Group: Documentation
@@ -60,14 +76,34 @@ Group: Libraries
 lib components for the libtasn1 package.
 
 
+%package lib32
+Summary: lib32 components for the libtasn1 package.
+Group: Default
+
+%description lib32
+lib32 components for the libtasn1 package.
+
+
 %prep
 %setup -q -n libtasn1-4.9
+pushd ..
+cp -a libtasn1-4.9 build32
+popd
 
 %build
 export LANG=C
+export SOURCE_DATE_EPOCH=1483123580
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
+pushd ../build32/
+export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export CFLAGS="$CFLAGS -m32"
+export CXXFLAGS="$CXXFLAGS -m32"
+export LDFLAGS="$LDFLAGS -m32"
+%configure --disable-static   --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
+make V=1  %{?_smp_mflags}
+popd
 %check
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
@@ -77,6 +113,15 @@ make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
 rm -rf %{buildroot}
+pushd ../build32/
+%make_install32
+if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
+then
+pushd %{buildroot}/usr/lib32/pkgconfig
+for i in *.pc ; do ln -s $i 32$i ; done
+popd
+fi
+popd
 %make_install
 
 %files
@@ -91,8 +136,14 @@ rm -rf %{buildroot}
 %files dev
 %defattr(-,root,root,-)
 /usr/include/*.h
-/usr/lib64/*.so
-/usr/lib64/pkgconfig/*.pc
+/usr/lib64/libtasn1.so
+/usr/lib64/pkgconfig/libtasn1.pc
+
+%files dev32
+%defattr(-,root,root,-)
+/usr/lib32/libtasn1.so
+/usr/lib32/pkgconfig/32libtasn1.pc
+/usr/lib32/pkgconfig/libtasn1.pc
 
 %files doc
 %defattr(-,root,root,-)
@@ -102,4 +153,10 @@ rm -rf %{buildroot}
 
 %files lib
 %defattr(-,root,root,-)
-/usr/lib64/*.so.*
+/usr/lib64/libtasn1.so.6
+/usr/lib64/libtasn1.so.6.5.2
+
+%files lib32
+%defattr(-,root,root,-)
+/usr/lib32/libtasn1.so.6
+/usr/lib32/libtasn1.so.6.5.2
