@@ -6,7 +6,7 @@
 #
 Name     : libtasn1
 Version  : 4.10
-Release  : 19
+Release  : 20
 URL      : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz
 Source0  : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz
 Source99 : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz.sig
