@@ -5,14 +5,14 @@
 # Source0 file verified with key 0x9D5EAAF69013B842 (nmav@gnutls.org)
 #
 Name     : libtasn1
-Version  : 4.10
-Release  : 20
-URL      : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz
-Source0  : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz
-Source99 : http://ftp.gnu.org/gnu/libtasn1/libtasn1-4.10.tar.gz.sig
+Version  : 4.12
+Release  : 21
+URL      : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
+Source0  : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
+Source99 : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz.sig
 Summary  : Library for ASN.1 and DER manipulation
 Group    : Development/Tools
-License  : GFDL-1.3 GPL-3.0 GPL-3.0+ LGPL-2.0+ LGPL-2.1
+License  : GPL-3.0 GPL-3.0+ LGPL-2.0+ LGPL-2.1
 Requires: libtasn1-bin
 Requires: libtasn1-lib
 Requires: libtasn1-doc
@@ -88,14 +88,17 @@ lib32 components for the libtasn1 package.
 
 
 %prep
-%setup -q -n libtasn1-4.10
+%setup -q -n libtasn1-4.12
 pushd ..
-cp -a libtasn1-4.10 build32
+cp -a libtasn1-4.12 build32
 popd
 
 %build
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1484696419
+export SOURCE_DATE_EPOCH=1496063886
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -111,11 +114,11 @@ popd
 export LANG=C
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
-export no_proxy=localhost
+export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1484696419
+export SOURCE_DATE_EPOCH=1496063886
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -158,9 +161,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libtasn1.so.6
-/usr/lib64/libtasn1.so.6.5.3
+/usr/lib64/libtasn1.so.6.5.4
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libtasn1.so.6
-/usr/lib32/libtasn1.so.6.5.3
+/usr/lib32/libtasn1.so.6.5.4
