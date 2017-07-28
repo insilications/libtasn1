@@ -1,0 +1,17 @@
+Configure miss: whether wint_t is too small
+Configure miss: whether stdint.h predates C++11
+Configure miss: whether self tests are run under valgrind
+Configure miss: whether self tests are run under valgrind
+Configure miss: whether <limits.h> defines MIN and MAX
+Configure miss: whether -Wno-missing-field-initializers is needed
+Configure miss: whether C compiler handles -Werror -Wunknown-warning-option
+Configure miss: i686-generic-linux-gnu-strip
+Configure miss: i686-generic-linux-gnu-mt
+Configure miss: i686-generic-linux-gnu-pkg-config
+Configure miss: whether wint_t is too small
+Configure miss: whether stdint.h predates C++11
+Configure miss: whether self tests are run under valgrind
+Configure miss: whether self tests are run under valgrind
+Configure miss: whether <limits.h> defines MIN and MAX
+Configure miss: whether -Wno-missing-field-initializers is needed
+Configure miss: whether C compiler handles -Werror -Wunknown-warning-option

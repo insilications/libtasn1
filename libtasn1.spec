@@ -6,7 +6,7 @@
 #
 Name     : libtasn1
 Version  : 4.12
-Release  : 21
+Release  : 22
 URL      : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
 Source0  : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
 Source99 : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz.sig
@@ -27,6 +27,7 @@ BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : libxslt-bin
 BuildRequires : valgrind
+Patch1: 0001-_asn1_check_identifier-safer-access-to-values-read.patch
 
 %description
 This is GNU Libtasn1, a small ASN.1 library.
@@ -89,6 +90,7 @@ lib32 components for the libtasn1 package.
 
 %prep
 %setup -q -n libtasn1-4.12
+%patch1 -p1
 pushd ..
 cp -a libtasn1-4.12 build32
 popd
@@ -98,7 +100,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1496063886
+export SOURCE_DATE_EPOCH=1501272629
 %configure --disable-static
 make V=1  %{?_smp_mflags}
 
@@ -118,7 +120,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1496063886
+export SOURCE_DATE_EPOCH=1501272629
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
