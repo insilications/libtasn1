@@ -6,7 +6,7 @@
 #
 Name     : libtasn1
 Version  : 4.13
-Release  : 25
+Release  : 26
 URL      : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source0  : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source99 : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
@@ -98,7 +98,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1518271651
+export SOURCE_DATE_EPOCH=1518272250
 export CFLAGS="$CFLAGS -fstack-protector-strong "
 export FCFLAGS="$CFLAGS -fstack-protector-strong "
 export FFLAGS="$CFLAGS -fstack-protector-strong "
@@ -122,7 +122,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1518271651
+export SOURCE_DATE_EPOCH=1518272250
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
