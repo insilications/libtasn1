@@ -6,7 +6,7 @@
 #
 Name     : libtasn1
 Version  : 4.13
-Release  : 27
+Release  : 28
 URL      : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source99 : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
