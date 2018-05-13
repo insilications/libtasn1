@@ -5,11 +5,11 @@
 # Source0 file verified with key 0x9D5EAAF69013B842 (nmav@gnutls.org)
 #
 Name     : libtasn1
-Version  : 4.12
-Release  : 29
-URL      : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
-Source0  : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz
-Source99 : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.12.tar.gz.sig
+Version  : 4.13
+Release  : 30
+URL      : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz
+Source0  : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz
+Source99 : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
 Summary  : Library for ASN.1 and DER manipulation
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+ LGPL-2.0+ LGPL-2.1
@@ -88,9 +88,9 @@ lib32 components for the libtasn1 package.
 
 
 %prep
-%setup -q -n libtasn1-4.12
+%setup -q -n libtasn1-4.13
 pushd ..
-cp -a libtasn1-4.12 build32
+cp -a libtasn1-4.13 build32
 popd
 
 %build
@@ -98,7 +98,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526052358
+export SOURCE_DATE_EPOCH=1526171539
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -122,7 +122,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1526052358
+export SOURCE_DATE_EPOCH=1526171539
 rm -rf %{buildroot}
 pushd ../build32/
 %make_install32
@@ -165,9 +165,9 @@ popd
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/libtasn1.so.6
-/usr/lib64/libtasn1.so.6.5.4
+/usr/lib64/libtasn1.so.6.5.5
 
 %files lib32
 %defattr(-,root,root,-)
 /usr/lib32/libtasn1.so.6
-/usr/lib32/libtasn1.so.6.5.4
+/usr/lib32/libtasn1.so.6.5.5
