@@ -6,16 +6,17 @@
 #
 Name     : libtasn1
 Version  : 4.13
-Release  : 30
-URL      : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz
-Source0  : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz
-Source99 : https://ftp.gnu.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
+Release  : 31
+URL      : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
+Source0  : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
+Source99 : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
 Summary  : Library for ASN.1 and DER manipulation
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+ LGPL-2.0+ LGPL-2.1
-Requires: libtasn1-bin
-Requires: libtasn1-lib
-Requires: libtasn1-doc
+Requires: libtasn1-bin = %{version}-%{release}
+Requires: libtasn1-lib = %{version}-%{release}
+Requires: libtasn1-license = %{version}-%{release}
+Requires: libtasn1-man = %{version}-%{release}
 BuildRequires : bison
 BuildRequires : docbook-xml
 BuildRequires : gcc-dev32
@@ -26,6 +27,7 @@ BuildRequires : glibc-libc32
 BuildRequires : gtk-doc
 BuildRequires : gtk-doc-dev
 BuildRequires : libxslt-bin
+BuildRequires : pkg-config
 BuildRequires : valgrind
 
 %description
@@ -36,6 +38,8 @@ Public License version 2.1 or later.  See the file COPYING.LIB.
 %package bin
 Summary: bin components for the libtasn1 package.
 Group: Binaries
+Requires: libtasn1-license = %{version}-%{release}
+Requires: libtasn1-man = %{version}-%{release}
 
 %description bin
 bin components for the libtasn1 package.
@@ -44,9 +48,9 @@ bin components for the libtasn1 package.
 %package dev
 Summary: dev components for the libtasn1 package.
 Group: Development
-Requires: libtasn1-lib
-Requires: libtasn1-bin
-Provides: libtasn1-devel
+Requires: libtasn1-lib = %{version}-%{release}
+Requires: libtasn1-bin = %{version}-%{release}
+Provides: libtasn1-devel = %{version}-%{release}
 
 %description dev
 dev components for the libtasn1 package.
@@ -55,9 +59,9 @@ dev components for the libtasn1 package.
 %package dev32
 Summary: dev32 components for the libtasn1 package.
 Group: Default
-Requires: libtasn1-lib32
-Requires: libtasn1-bin
-Requires: libtasn1-dev
+Requires: libtasn1-lib32 = %{version}-%{release}
+Requires: libtasn1-bin = %{version}-%{release}
+Requires: libtasn1-dev = %{version}-%{release}
 
 %description dev32
 dev32 components for the libtasn1 package.
@@ -66,6 +70,7 @@ dev32 components for the libtasn1 package.
 %package doc
 Summary: doc components for the libtasn1 package.
 Group: Documentation
+Requires: libtasn1-man = %{version}-%{release}
 
 %description doc
 doc components for the libtasn1 package.
@@ -74,6 +79,7 @@ doc components for the libtasn1 package.
 %package lib
 Summary: lib components for the libtasn1 package.
 Group: Libraries
+Requires: libtasn1-license = %{version}-%{release}
 
 %description lib
 lib components for the libtasn1 package.
@@ -82,9 +88,26 @@ lib components for the libtasn1 package.
 %package lib32
 Summary: lib32 components for the libtasn1 package.
 Group: Default
+Requires: libtasn1-license = %{version}-%{release}
 
 %description lib32
 lib32 components for the libtasn1 package.
+
+
+%package license
+Summary: license components for the libtasn1 package.
+Group: Default
+
+%description license
+license components for the libtasn1 package.
+
+
+%package man
+Summary: man components for the libtasn1 package.
+Group: Default
+
+%description man
+man components for the libtasn1 package.
 
 
 %prep
@@ -98,7 +121,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1526171539
+export SOURCE_DATE_EPOCH=1542162108
 export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -108,6 +131,7 @@ make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
+export ASFLAGS="$ASFLAGS --32"
 export CFLAGS="$CFLAGS -m32"
 export CXXFLAGS="$CXXFLAGS -m32"
 export LDFLAGS="$LDFLAGS -m32"
@@ -120,10 +144,15 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
+cd ../build32;
+make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1526171539
+export SOURCE_DATE_EPOCH=1542162108
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/libtasn1
+cp COPYING %{buildroot}/usr/share/package-licenses/libtasn1/COPYING
+cp COPYING.LIB %{buildroot}/usr/share/package-licenses/libtasn1/COPYING.LIB
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -149,6 +178,46 @@ popd
 /usr/include/*.h
 /usr/lib64/libtasn1.so
 /usr/lib64/pkgconfig/libtasn1.pc
+/usr/share/man/man3/asn1_array2tree.3
+/usr/share/man/man3/asn1_bit_der.3
+/usr/share/man/man3/asn1_check_version.3
+/usr/share/man/man3/asn1_copy_node.3
+/usr/share/man/man3/asn1_create_element.3
+/usr/share/man/man3/asn1_decode_simple_ber.3
+/usr/share/man/man3/asn1_decode_simple_der.3
+/usr/share/man/man3/asn1_delete_element.3
+/usr/share/man/man3/asn1_delete_structure.3
+/usr/share/man/man3/asn1_delete_structure2.3
+/usr/share/man/man3/asn1_der_coding.3
+/usr/share/man/man3/asn1_der_decoding.3
+/usr/share/man/man3/asn1_der_decoding2.3
+/usr/share/man/man3/asn1_der_decoding_element.3
+/usr/share/man/man3/asn1_der_decoding_startEnd.3
+/usr/share/man/man3/asn1_dup_node.3
+/usr/share/man/man3/asn1_encode_simple_der.3
+/usr/share/man/man3/asn1_expand_any_defined_by.3
+/usr/share/man/man3/asn1_expand_octet_string.3
+/usr/share/man/man3/asn1_find_node.3
+/usr/share/man/man3/asn1_find_structure_from_oid.3
+/usr/share/man/man3/asn1_get_bit_der.3
+/usr/share/man/man3/asn1_get_length_ber.3
+/usr/share/man/man3/asn1_get_length_der.3
+/usr/share/man/man3/asn1_get_object_id_der.3
+/usr/share/man/man3/asn1_get_octet_der.3
+/usr/share/man/man3/asn1_get_tag_der.3
+/usr/share/man/man3/asn1_length_der.3
+/usr/share/man/man3/asn1_number_of_elements.3
+/usr/share/man/man3/asn1_octet_der.3
+/usr/share/man/man3/asn1_parser2array.3
+/usr/share/man/man3/asn1_parser2tree.3
+/usr/share/man/man3/asn1_perror.3
+/usr/share/man/man3/asn1_print_structure.3
+/usr/share/man/man3/asn1_read_node_value.3
+/usr/share/man/man3/asn1_read_tag.3
+/usr/share/man/man3/asn1_read_value.3
+/usr/share/man/man3/asn1_read_value_type.3
+/usr/share/man/man3/asn1_strerror.3
+/usr/share/man/man3/asn1_write_value.3
 
 %files dev32
 %defattr(-,root,root,-)
@@ -157,10 +226,8 @@ popd
 /usr/lib32/pkgconfig/libtasn1.pc
 
 %files doc
-%defattr(-,root,root,-)
+%defattr(0644,root,root,0755)
 %doc /usr/share/info/*
-%doc /usr/share/man/man1/*
-%doc /usr/share/man/man3/*
 
 %files lib
 %defattr(-,root,root,-)
@@ -171,3 +238,14 @@ popd
 %defattr(-,root,root,-)
 /usr/lib32/libtasn1.so.6
 /usr/lib32/libtasn1.so.6.5.5
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/libtasn1/COPYING
+/usr/share/package-licenses/libtasn1/COPYING.LIB
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/asn1Coding.1
+/usr/share/man/man1/asn1Decoding.1
+/usr/share/man/man1/asn1Parser.1
