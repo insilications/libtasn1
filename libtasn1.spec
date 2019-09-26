@@ -6,10 +6,10 @@
 #
 Name     : libtasn1
 Version  : 4.13
-Release  : 32
+Release  : 33
 URL      : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
-Source99 : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
+Source1 : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
 Summary  : Library for ASN.1 and DER manipulation
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+ LGPL-2.0+ LGPL-2.1
@@ -39,7 +39,6 @@ Public License version 2.1 or later.  See the file COPYING.LIB.
 Summary: bin components for the libtasn1 package.
 Group: Binaries
 Requires: libtasn1-license = %{version}-%{release}
-Requires: libtasn1-man = %{version}-%{release}
 
 %description bin
 bin components for the libtasn1 package.
@@ -51,6 +50,7 @@ Group: Development
 Requires: libtasn1-lib = %{version}-%{release}
 Requires: libtasn1-bin = %{version}-%{release}
 Provides: libtasn1-devel = %{version}-%{release}
+Requires: libtasn1 = %{version}-%{release}
 
 %description dev
 dev components for the libtasn1 package.
@@ -120,26 +120,27 @@ popd
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1542162108
-export CFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FCFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export FFLAGS="$CFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
-export CXXFLAGS="$CXXFLAGS -fstack-protector-strong -mzero-caller-saved-regs=used "
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1569530608
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export FFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
+export CXXFLAGS="$CXXFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 pushd ../build32/
 export PKG_CONFIG_PATH="/usr/lib32/pkgconfig"
-export ASFLAGS="$ASFLAGS --32"
-export CFLAGS="$CFLAGS -m32"
-export CXXFLAGS="$CXXFLAGS -m32"
-export LDFLAGS="$LDFLAGS -m32"
+export ASFLAGS="${ASFLAGS}${ASFLAGS:+ }--32"
+export CFLAGS="${CFLAGS}${CFLAGS:+ }-m32 -mstackrealign"
+export CXXFLAGS="${CXXFLAGS}${CXXFLAGS:+ }-m32 -mstackrealign"
+export LDFLAGS="${LDFLAGS}${LDFLAGS:+ }-m32 -mstackrealign"
 %configure --disable-static    --libdir=/usr/lib32 --build=i686-generic-linux-gnu --host=i686-generic-linux-gnu --target=i686-clr-linux-gnu
 make  %{?_smp_mflags}
 popd
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
@@ -148,7 +149,7 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1542162108
+export SOURCE_DATE_EPOCH=1569530608
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtasn1
 cp COPYING %{buildroot}/usr/share/package-licenses/libtasn1/COPYING
@@ -175,7 +176,7 @@ popd
 
 %files dev
 %defattr(-,root,root,-)
-/usr/include/*.h
+/usr/include/libtasn1.h
 /usr/lib64/libtasn1.so
 /usr/lib64/pkgconfig/libtasn1.pc
 /usr/share/man/man3/asn1_array2tree.3
