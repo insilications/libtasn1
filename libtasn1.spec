@@ -6,7 +6,7 @@
 #
 Name     : libtasn1
 Version  : 4.13
-Release  : 33
+Release  : 34
 URL      : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source0  : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz
 Source1 : https://mirrors.kernel.org/gnu/libtasn1/libtasn1-4.13.tar.gz.sig
@@ -14,6 +14,7 @@ Summary  : Library for ASN.1 and DER manipulation
 Group    : Development/Tools
 License  : GPL-3.0 GPL-3.0+ LGPL-2.0+ LGPL-2.1
 Requires: libtasn1-bin = %{version}-%{release}
+Requires: libtasn1-info = %{version}-%{release}
 Requires: libtasn1-lib = %{version}-%{release}
 Requires: libtasn1-license = %{version}-%{release}
 Requires: libtasn1-man = %{version}-%{release}
@@ -67,13 +68,12 @@ Requires: libtasn1-dev = %{version}-%{release}
 dev32 components for the libtasn1 package.
 
 
-%package doc
-Summary: doc components for the libtasn1 package.
-Group: Documentation
-Requires: libtasn1-man = %{version}-%{release}
+%package info
+Summary: info components for the libtasn1 package.
+Group: Default
 
-%description doc
-doc components for the libtasn1 package.
+%description info
+info components for the libtasn1 package.
 
 
 %package lib
@@ -112,6 +112,7 @@ man components for the libtasn1 package.
 
 %prep
 %setup -q -n libtasn1-4.13
+cd %{_builddir}/libtasn1-4.13
 pushd ..
 cp -a libtasn1-4.13 build32
 popd
@@ -121,7 +122,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1569530608
+export SOURCE_DATE_EPOCH=1573789950
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
 export FCFLAGS="$CFLAGS -fno-lto -fstack-protector-strong -mzero-caller-saved-regs=used "
@@ -149,11 +150,11 @@ cd ../build32;
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1569530608
+export SOURCE_DATE_EPOCH=1573789950
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/libtasn1
-cp COPYING %{buildroot}/usr/share/package-licenses/libtasn1/COPYING
-cp COPYING.LIB %{buildroot}/usr/share/package-licenses/libtasn1/COPYING.LIB
+cp %{_builddir}/libtasn1-4.13/COPYING %{buildroot}/usr/share/package-licenses/libtasn1/8624bcdae55baeef00cd11d5dfcfa60f68710a02
+cp %{_builddir}/libtasn1-4.13/COPYING.LIB %{buildroot}/usr/share/package-licenses/libtasn1/01a6b4bf79aca9b556822601186afab86e8c4fbf
 pushd ../build32/
 %make_install32
 if [ -d  %{buildroot}/usr/lib32/pkgconfig ]
@@ -226,9 +227,9 @@ popd
 /usr/lib32/pkgconfig/32libtasn1.pc
 /usr/lib32/pkgconfig/libtasn1.pc
 
-%files doc
+%files info
 %defattr(0644,root,root,0755)
-%doc /usr/share/info/*
+/usr/share/info/libtasn1.info
 
 %files lib
 %defattr(-,root,root,-)
@@ -242,8 +243,8 @@ popd
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/libtasn1/COPYING
-/usr/share/package-licenses/libtasn1/COPYING.LIB
+/usr/share/package-licenses/libtasn1/01a6b4bf79aca9b556822601186afab86e8c4fbf
+/usr/share/package-licenses/libtasn1/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
