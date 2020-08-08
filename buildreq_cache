@@ -1,4 +1,2 @@
-4.13
-bison
-pkg-config
-valgrind
+4.16.0
+texinfo

@@ -2,3 +2,17 @@
 # This file contains extra pkgconfig build requirements that don't get picked up but are 
 # desirable. One name per line, no whitespace.
 #
+findutils
+bison
+docbook-xml
+gcc-dev32
+gcc-libgcc32
+gcc-libstdc++32
+glibc-dev32
+glibc-libc32
+gtk-doc
+gtk-doc-dev
+libxslt-bin
+pkg-config
+valgrind
+buildreq-configure
